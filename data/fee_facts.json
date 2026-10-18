@@ -1,0 +1,189 @@
+{
+  "_note": "Fact bank for the fee explainer. Every fact is restated from the official page in 'sources', checked on 'last_checked'. Re-check before each weekly run; charges change.",
+  "last_checked": "2026-10-18",
+  "sources": {
+    "groww_pricing": {
+      "title": "Groww - Pricing and charges",
+      "url": "https://groww.in/pricing"
+    },
+    "groww_help_stock_charges": {
+      "title": "Groww Help - How much does Groww charge for stocks?",
+      "url": "https://groww.in/help/stocks%2C-f%26o%2C-ipo-%26-mtf/sx-demat-account/how-much-does-groww-charge-for-stocks-1"
+    },
+    "groww_help_exit_load": {
+      "title": "Groww Help - What is exit load?",
+      "url": "https://groww.in/help/mutual-funds/order/what-is-exit-load--71"
+    },
+    "icici_flexicap_factsheet": {
+      "title": "ICICI Prudential Flexi Cap Fund - scheme factsheet (August 2026)",
+      "url": "https://www.icicipruamc.com/blob/knowledgecentre/factsheet-schemes/Schemes/1.%20Equity%20Schemes/ICICI%20Prudential%20Flexi%20Cap%20Fund.pdf"
+    },
+    "icici_elss_factsheet": {
+      "title": "ICICI Prudential ELSS - Tax Saver Fund - scheme factsheet (August 2026)",
+      "url": "https://www.icicipruamc.com/blob/knowledgecentre/factsheet-schemes/Schemes/1.%20Equity%20Schemes/ICICI%20Prudential%20ELSS%20-%20Tax%20Saver%20Fund.pdf"
+    }
+  },
+  "fees": {
+    "dp_charges": {
+      "name": "DP (depository participant) charges",
+      "primary_links": [
+        "groww_help_stock_charges",
+        "groww_pricing"
+      ],
+      "facts": [
+        {
+          "text": "DP charges apply each time shares are sold from the demat account; Groww's pricing table lists them per sell transaction, so buying shares does not attract them.",
+          "source": "groww_help_stock_charges"
+        },
+        {
+          "text": "For a sale value of ₹100 or more, the DP charge is ₹20.00 for male investors (₹3.50 depository + ₹16.50 Groww) and ₹19.75 for female investors (₹3.25 depository + ₹16.50 Groww).",
+          "source": "groww_help_stock_charges"
+        },
+        {
+          "text": "For a sale value below ₹100, Groww waives its ₹16.50 share, so only the depository charge of ₹3.50 (male) or ₹3.25 (female) applies.",
+          "source": "groww_help_stock_charges"
+        },
+        {
+          "text": "18% GST is added on top of DP charges.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "Groww lists ₹0 account opening and ₹0 account maintenance charges separately from DP charges, which still apply on sells.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "Groww's pricing table lists ₹0 DP charges for intraday sells.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "DP charges are separate from brokerage, which is the lower of ₹20 or 0.1% of trade value per executed order, with a minimum of ₹5.",
+          "source": "groww_help_stock_charges"
+        }
+      ]
+    },
+    "brokerage": {
+      "name": "Brokerage",
+      "primary_links": [
+        "groww_help_stock_charges",
+        "groww_pricing"
+      ],
+      "facts": [
+        {
+          "text": "Groww's brokerage on stock orders is the lower of ₹20 or 0.1% of trade value per executed order, with a minimum of ₹5.",
+          "source": "groww_help_stock_charges"
+        },
+        {
+          "text": "For equity delivery trades, brokerage is subject to a SEBI regulatory cap of 2.5% of trade value.",
+          "source": "groww_help_stock_charges"
+        },
+        {
+          "text": "18% GST is added on top of brokerage.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "Statutory charges such as STT, stamp duty, exchange transaction charges and SEBI turnover fees are listed separately from brokerage.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "DP charges of ₹20.00 (male) or ₹19.75 (female) apply separately on sells with a sale value of ₹100 or more.",
+          "source": "groww_help_stock_charges"
+        },
+        {
+          "text": "Groww lists direct mutual fund investments at zero commission.",
+          "source": "groww_pricing"
+        }
+      ]
+    },
+    "exit_load": {
+      "name": "Exit load on mutual fund redemption",
+      "primary_links": [
+        "groww_help_exit_load",
+        "icici_flexicap_factsheet"
+      ],
+      "facts": [
+        {
+          "text": "Exit load is a fee payable to the mutual fund house for exiting a fund, fully or partially, before a specified period from the date of investment.",
+          "source": "groww_help_exit_load"
+        },
+        {
+          "text": "An approximate exit load amount is shown when you place a redeem order on Groww.",
+          "source": "groww_help_exit_load"
+        },
+        {
+          "text": "The exit load period and rate differ by scheme and are stated in each scheme's factsheet and scheme documents.",
+          "source": "icici_flexicap_factsheet"
+        },
+        {
+          "text": "Example: ICICI Prudential Flexi Cap Fund charges 1% of the applicable NAV if units are redeemed or switched out within one month of allotment, and nil after one month (with effect from April 6, 2026).",
+          "source": "icici_flexicap_factsheet"
+        },
+        {
+          "text": "Example: ICICI Prudential ELSS - Tax Saver Fund has a nil exit load.",
+          "source": "icici_elss_factsheet"
+        },
+        {
+          "text": "Groww lists direct mutual fund investments at zero commission; exit load is a fund house charge, not a Groww fee.",
+          "source": "groww_pricing"
+        }
+      ]
+    },
+    "statutory_charges": {
+      "name": "Statutory charges (STT, stamp duty, exchange and SEBI fees, GST)",
+      "primary_links": [
+        "groww_pricing",
+        "groww_help_stock_charges"
+      ],
+      "facts": [
+        {
+          "text": "STT is 0.1% on both buy and sell for delivery trades, and 0.025% on the sell side for intraday trades.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "Stamp duty is 0.015% on the buy side for delivery and 0.003% on the buy side for intraday.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "Exchange transaction charges are 0.00297% on NSE and 0.00375% on BSE, on both buy and sell.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "SEBI turnover fees are 0.0001% on both buy and sell.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "18% GST applies to brokerage, DP charges, exchange transaction charges and SEBI turnover fees, but not to stamp duty or STT.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "These charges are separate from Groww's brokerage of the lower of ₹20 or 0.1% per executed order, minimum ₹5.",
+          "source": "groww_help_stock_charges"
+        }
+      ]
+    },
+    "account_maintenance": {
+      "name": "Account opening and maintenance charges",
+      "primary_links": [
+        "groww_pricing",
+        "groww_help_stock_charges"
+      ],
+      "facts": [
+        {
+          "text": "Groww lists ₹0 for trading and demat account opening.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "Groww lists ₹0 account maintenance charges.",
+          "source": "groww_pricing"
+        },
+        {
+          "text": "DP charges are separate and apply each time shares are sold from the demat account.",
+          "source": "groww_help_stock_charges"
+        },
+        {
+          "text": "For a sale value of ₹100 or more, the DP charge is ₹20.00 for male investors and ₹19.75 for female investors, plus GST.",
+          "source": "groww_help_stock_charges"
+        }
+      ]
+    }
+  }
+}

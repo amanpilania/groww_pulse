@@ -1,0 +1,27 @@
+review_id,date,source,rating,review_text,app_version
+T000,2026-10-08,app_store,1,Why were DP charges deducted when I sold my shares? Nobody told me about this charge before selling.,26.9.1
+T001,2026-09-04,google_play,2,"DP charges of around 20 rupees cut on a small sell order, this was not mentioned anywhere in the app.",26.9.1
+T002,2026-10-07,google_play,1,Hidden charges everywhere. Sold one share and DP charges were deducted without informing me.,26.9.1
+T003,2026-08-10,app_store,2,"I did not know about DP charges, the app says zero brokerage but money still gets cut when selling.",26.9.1
+T004,2026-10-12,google_play,3,"Please explain the DP charges clearly in the order screen, it is confusing for new investors.",26.9.1
+T005,2026-10-16,google_play,2,"Brokerage is charged on every order, I thought delivery was free on this app.",26.9.1
+T006,2026-08-19,app_store,1,Exit load was charged on my mutual fund redemption and I had no idea why it happened.,26.9.1
+T007,2026-09-22,google_play,1,Withdrawal has been pending for four days and the money is still not credited to my bank.,26.9.1
+T008,2026-10-16,google_play,2,"Withdraw request stuck, UPI payment failed twice and the refund is still not settled.",26.9.1
+T009,2026-08-01,app_store,1,"Money not credited after withdrawal, very slow process compared to other apps in the market.",26.9.1
+T010,2026-09-04,google_play,2,Payment through UPI keeps failing when I add funds in the morning before market opens.,26.9.1
+T011,2026-10-07,google_play,1,The app crashes every time I open the portfolio page after the latest update on my phone.,26.9.1
+T012,2026-10-11,app_store,2,"Very slow and laggy during market hours, charts keep loading and orders take ages to show.",26.9.1
+T013,2026-09-13,google_play,1,"App not working at 9:15 am again, it hangs exactly when the market opens every single day.",26.9.1
+T014,2026-10-16,google_play,2,Getting logged out repeatedly and the app shows an error screen after the new update.,26.9.1
+T015,2026-08-19,app_store,1,"Customer support never replies, raised a ticket a week ago and still no response at all.",26.9.1
+T016,2026-10-15,google_play,2,Customer care chat only gives automated answers and nobody calls back to resolve my issue.,26.9.1
+T017,2026-10-25,google_play,3,"Support is slow, it took five days to get a reply about a simple question on my account.",26.9.1
+T018,2026-08-01,app_store,2,My stop loss order was rejected without any reason and I lost money on the trade.,26.9.1
+T019,2026-09-04,google_play,1,Option chain freezes during F&O trading and my order execution was delayed by a minute.,26.9.1
+T020,2026-10-10,google_play,3,"Intraday order got rejected twice, please improve order execution during volatile sessions.",26.9.1
+T021,2026-08-10,app_store,5,"Nice app, very easy to use for beginners and I like the clean design overall.",26.9.1
+T022,2026-09-13,google_play,5,"Great app for investing in mutual funds, simple and smooth experience so far.",26.9.1
+T023,2026-10-16,google_play,4,Good app but please add more detailed charts and better research tools for stocks.,26.9.1
+T024,2026-10-14,app_store,5,"Excellent experience, started my first SIP in two minutes without any trouble.",26.9.1
+T025,2026-09-22,google_play,2,"Call me on [phone] to fix my withdrawal, money still not credited after a week.",26.9.1

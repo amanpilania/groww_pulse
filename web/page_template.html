@@ -1,0 +1,518 @@
+<title>Groww Review Pulse</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: one working column of four stages (reviews → insights → outputs → approval), outputs side by side on wide screens */
+:root{
+  --bg:#F6F7F5; --surface:#FFFFFF; --ink:#18201C; --muted:#5A665F; --line:#DCE2DD;
+  --accent:#0B6E4F; --accent-ink:#FFFFFF; --accent-soft:#E2F1EA;
+  --warn:#8A5A00; --warn-soft:#FFF3D9; --bad:#A3322A; --bad-soft:#FBE7E5; --good:#1D6B3F;
+  --display:"Newsreader", Georgia, "Times New Roman", serif;
+  --body:"Libre Franklin", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101513; --surface:#171E1B; --ink:#E5ECE8; --muted:#9AAAA2; --line:#2B3632;
+  --accent:#5CC69E; --accent-ink:#08130F; --accent-soft:#17322A;
+  --warn:#F0C46A; --warn-soft:#2E2614; --bad:#F09A90; --bad-soft:#341C1A; --good:#7FD3A3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101513; --surface:#171E1B; --ink:#E5ECE8; --muted:#9AAAA2; --line:#2B3632;
+  --accent:#5CC69E; --accent-ink:#08130F; --accent-soft:#17322A;
+  --warn:#F0C46A; --warn-soft:#2E2614; --bad:#F09A90; --bad-soft:#341C1A; --good:#7FD3A3; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1{font-family:var(--display);font-weight:600;font-size:2.1rem;line-height:1.15;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.45rem;margin:0;text-wrap:balance}
+h3{font-size:1rem;font-weight:600;margin:0}
+p{margin:0}
+.lede{color:var(--muted);max-width:68ch}
+.stage{display:flex;flex-direction:column;gap:14px;padding-top:22px;border-top:1px solid var(--line)}
+.stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.step{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.grid2>*{min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink);border:1px solid var(--line)}
+.chip.example{background:var(--warn-soft);color:var(--warn);border-color:transparent;font-weight:600}
+.chip.on{background:var(--accent-soft)}
+button,.file{font:inherit;font-weight:500;border-radius:6px;padding:8px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,.file:focus-within,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.file input{position:absolute;opacity:0;width:1px;height:1px}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.trend{font-family:var(--mono);font-size:.8rem}
+.trend.rising{color:var(--bad)} .trend.falling{color:var(--good)} .trend.steady{color:var(--muted)}
+.top{font-weight:600}
+blockquote{margin:0;padding:8px 14px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0}
+blockquote footer{font-size:.8rem;color:var(--muted);margin-top:4px}
+.fee{background:var(--warn-soft);border-radius:6px;padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+.fee strong{color:var(--warn)}
+.doc{font-size:.95rem;display:flex;flex-direction:column;gap:8px}
+.doc h4{font-family:var(--display);font-size:1.15rem;font-weight:600;margin:6px 0 0}
+.doc ul,.doc ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.doc a{color:var(--accent);word-break:break-word}
+.meta{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+pre{font-family:var(--mono);font-size:.78rem;line-height:1.5;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;margin:0;overflow-x:auto;white-space:pre-wrap;word-break:break-word;max-height:360px}
+.gate{border:2px solid var(--accent);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}
+.status{border-radius:6px;padding:10px 14px;font-size:.92rem}
+.status.ok{background:var(--accent-soft)} .status.no{background:var(--bad-soft);color:var(--bad)} .status.info{background:var(--warn-soft);color:var(--warn)}
+.entry{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.entry:first-child{border-top:0;padding-top:0}
+label.check{display:flex;gap:8px;align-items:center;cursor:pointer}
+@media (prefers-reduced-motion:no-preference){.stage{animation:fade .25s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <span class="step">Product + Support weekly workflow · Groww</span>
+    <h1>Groww Review Pulse</h1>
+    <p class="lede">Turns public Groww app reviews into a weekly product pulse and a support-ready fee explainer. Nothing is logged to the notes doc or drafted as an email until a person approves it.</p>
+    <div class="row small" id="caps"></div>
+  </header>
+
+  <section class="stage" aria-labelledby="s1">
+    <div class="stage-head"><span class="step">Stage 1</span><h2 id="s1">Reviews</h2><span id="dataTag"></span></div>
+    <p class="muted small">Upload the <code>data/reviews.csv</code> made by <code>scripts/collect_reviews.py</code> (columns: review_id, date, source, rating, review_text). Names are never collected and personal details are masked again here.</p>
+    <div class="row">
+      <label class="file" for="csv">Upload reviews CSV<input id="csv" type="file" accept=".csv,text/csv"></label>
+      <button id="loadExample">Load demo data</button>
+      <span class="small muted" id="dataInfo"></span>
+    </div>
+    <p class="small" id="csvError" style="color:var(--bad)" hidden></p>
+  </section>
+
+  <section class="stage" aria-labelledby="s2">
+    <div class="stage-head"><span class="step">Stage 2</span><h2 id="s2">Review intelligence</h2></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Theme</th><th>Reviews</th><th>Share</th><th>Avg ★</th><th>1–2★</th><th>Last 2 wks</th></tr></thead><tbody id="themeRows"></tbody></table></div>
+    <div id="quotes" style="display:flex;flex-direction:column;gap:10px"></div>
+    <div id="feeBox"></div>
+  </section>
+
+  <section class="stage" aria-labelledby="s3">
+    <div class="stage-head"><span class="step">Stage 3</span><h2 id="s3">Outputs</h2></div>
+    <div class="row small"><button id="aiBtn">Improve wording with Claude</button><span class="muted" id="aiInfo">Optional. Facts, quotes and numbers stay checked against the data.</span></div>
+    <div class="grid2">
+      <article class="panel"><div class="row" style="justify-content:space-between"><h3>Weekly product pulse</h3><span class="meta" id="pulseMeta"></span></div><div class="doc" id="pulseOut"></div></article>
+      <article class="panel"><div class="row" style="justify-content:space-between"><h3>Fee explainer (support snippet)</h3><span class="meta" id="expMeta"></span></div><div class="doc" id="expOut"></div></article>
+    </div>
+  </section>
+
+  <section class="stage" aria-labelledby="s4">
+    <div class="stage-head"><span class="step">Stage 4</span><h2 id="s4">Approval before any action</h2></div>
+    <div class="gate">
+      <p>These are the exact actions that will run after approval. Nothing has been written yet.</p>
+      <div class="grid2">
+        <div class="panel"><h3>Action 1 · Append to notes doc</h3><pre id="entryPreview"></pre></div>
+        <div class="panel"><h3>Action 2 · Create email draft <span class="chip">draft only, never sent</span></h3><pre id="emailPreview"></pre></div>
+      </div>
+      <label class="check"><input type="checkbox" id="reviewed"> I have reviewed both actions</label>
+      <div class="row"><button class="primary" id="approve" disabled>Approve and run</button><button id="reject">Reject</button></div>
+      <div id="decision" class="status" hidden></div>
+      <div id="draftBox" class="panel" hidden>
+        <h3>Email draft</h3>
+        <p class="small">Subject: <span id="draftSubject"></span></p>
+        <div class="row"><button id="copyDraft">Copy draft text</button><button id="saveEml">Save as .eml draft</button><span class="small muted" id="draftMsg"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stage" aria-labelledby="s5">
+    <div class="stage-head"><span class="step">Notes doc</span><h2 id="s5">Weekly pulse log</h2><span class="meta" id="logWhere"></span></div>
+    <div class="panel" id="log"><p class="muted">No entries yet. Approve a run in Stage 4 and its entry is appended here with date, top themes, pulse, fee issue, explanation bullets and source links.</p></div>
+  </section>
+</div>
+
+<script id="example-data" type="application/json">__EXAMPLE__</script>
+<script id="fee-facts" type="application/json">__FACTS__</script>
+<script>
+(() => {
+"use strict";
+const $ = id => document.getElementById(id);
+const EXAMPLE = JSON.parse($("example-data").textContent);
+const BANK = JSON.parse($("fee-facts").textContent);
+
+// ---------------- cleaning + parsing ----------------
+const MASKS = [
+  [/\b[\w.+-]+@[\w-]+\.[\w.-]+\b/g,"[email]"], [/\b[A-Z]{5}\d{4}[A-Z]\b/gi,"[pan]"],
+  [/\b\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/g,"[id-number]"], [/(?<!\d)(?:\+?91[\s-]?|0)?[6-9]\d{4}[\s-]?\d{5}(?!\d)/g,"[phone]"],
+  [/\b(?:\d[ -]?){13,19}\b/g,"[card-number]"],
+  [/\b(?:client\s*id|ucc|folio|account|a\/c|acct|demat)\b(?:\s*(?:no|number|#))?\W{0,5}[A-Z0-9]{6,}/gi,"[account]"],
+];
+const mask = t => MASKS.reduce((s,[r,v]) => s.replace(r,v), t);
+function parseCSV(text){
+  const rows=[]; let row=[], f="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else if(c==='"') q=true;
+    else if(c===','){ row.push(f); f=""; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(f); rows.push(row); row=[]; f=""; }
+    else f+=c;
+  }
+  if(f!==""||row.length){ row.push(f); rows.push(row); }
+  const head=rows.shift().map(h=>h.trim().replace(/^﻿/,""));
+  return rows.filter(r=>r.length>1).map(r=>Object.fromEntries(head.map((h,i)=>[h,r[i]??""])));
+}
+function clean(rows){
+  const seen=new Set(), out=[];
+  for(const r of rows){
+    const text=mask(String(r.review_text||"").replace(/\s+/g," ").trim());
+    const rating=Number(r.rating);
+    const letters=[...text].filter(c=>/\p{L}/u.test(c));
+    const latin=letters.length && letters.filter(c=>c.charCodeAt(0)<128).length/letters.length>=0.8;
+    if(text.split(" ").length<4||!latin||!(rating>=1&&rating<=5)||seen.has(text)) continue;
+    seen.add(text);
+    out.push({review_id:r.review_id||("R"+out.length), date:String(r.date).slice(0,10), source:r.source||"", rating, review_text:text});
+  }
+  return out.sort((a,b)=>b.date.localeCompare(a.date));
+}
+
+// ---------------- themes ----------------
+const THEMES = [
+  ["Charges and fees", /charge|fee|brokerage|exit load|stamp duty|deduct|hidden|gst|stt|interest/i],
+  ["Withdrawals, payments and refunds", /withdraw|refund|upi|payment|money not|credited|settle|bank|mandate|autopay/i],
+  ["App performance and glitches", /crash|lag|slow|hang|glitch|bug|not working|loading|error|logout|logged out|freez|down\b/i],
+  ["Customer support", /support|customer care|no response|ticket|chat|call back|reply|helpline/i],
+  ["Orders, trading and F&O", /order|trade|trading|f&o|option|intraday|stop ?loss|gtt|execution|rejected|chart/i],
+];
+const themeOf = t => (THEMES.find(([,r])=>r.test(t))||[null])[0];
+const day = s => new Date(s+"T00:00:00Z").getTime();
+function themeStats(rows){
+  const end=Math.max(...rows.map(r=>day(r.date))), start=Math.min(...rows.map(r=>day(r.date)));
+  const recentStart=end-13*864e5, weeks=Math.max(1,(end-start)/(7*864e5)), prior=Math.max(1,weeks-2);
+  const stats=[];
+  for(const [name] of THEMES){
+    const sub=rows.filter(r=>r.theme===name); if(!sub.length) continue;
+    const rec=sub.filter(r=>day(r.date)>=recentStart).length, pri=sub.length-rec;
+    const rr=rec/2, rp=pri/prior;
+    const avg=sub.reduce((a,r)=>a+r.rating,0)/sub.length;
+    stats.push({theme:name, reviews:sub.length, share:+(100*sub.length/rows.length).toFixed(1), avg:+avg.toFixed(2),
+      low:+(100*sub.filter(r=>r.rating<=2).length/sub.length).toFixed(0),
+      trend: rr>1.25*rp?"rising":rr<0.8*rp?"falling":"steady"});
+  }
+  return stats.sort((a,b)=>b.reviews-a.reviews || a.avg-b.avg);
+}
+const MASK_TOKEN=/\[(?:email|pan|id-number|phone|card-number|account|reference)\]/;
+function quoteFor(sub, used){
+  const sorted=[...sub].sort((a,b)=>a.rating-b.rating||b.date.localeCompare(a.date));
+  for(const r of sorted){
+    if(used.has(r.review_id)||MASK_TOKEN.test(r.review_text)) continue;
+    let span="";
+    for(const s of r.review_text.split(/(?<=[.!?])\s+/)){ const c=(span+" "+s).trim(); if(c.split(" ").length>35) break; span=c; }
+    const n=span.split(" ").length;
+    if(n>=8&&n<=35&&r.review_text.includes(span)) return {...r, quote:span};
+  }
+  return null;
+}
+
+// ---------------- fees ----------------
+const FEE_RX = {
+  dp_charges:[/\bdp\s*(?:charge|fee)s?\b/i,/\bdepository\s+(?:charge|fee)/i,/\bcdsl\s+(?:charge|fee)/i],
+  brokerage:[/\bbrokerage\b/i],
+  exit_load:[/\bexit\s*load\b/i,/\bredemption\s+(?:charge|fee)/i],
+  stamp_duty:[/\bstamp\s*duty\b/i],
+  account_maintenance:[/\bamc\s+(?:charge|fee)/i,/\baccount\s+maintenance\b/i,/\bannual\s+(?:charge|fee)/i],
+  mtf_interest:[/\bmtf\b/i,/\bmargin\s+(?:trading\s+)?interest\b/i,/\bpledge\s+(?:charge|fee)/i],
+  statutory_charges:[/\bstt\b/i,/\bgst\b/i,/\bexchange\s+(?:transaction\s+)?(?:charge|fee)/i],
+};
+const FEE_LABEL = {dp_charges:"DP (depository) charges on selling shares", brokerage:"Brokerage per order",
+  exit_load:"Mutual fund exit load on redemption", stamp_duty:"Stamp duty on purchases",
+  account_maintenance:"Account maintenance / annual charges", mtf_interest:"MTF / margin interest and pledge charges",
+  statutory_charges:"Statutory charges (STT, GST, exchange fees)"};
+const CONFUSED=/\bwhy\b|\bhidden\b|\bwithout\s+(?:informing|telling|notice|any\s+information)\b|\bdidn'?t\s+know\b|\bdid\s+not\s+know\b|\bnot\s+(?:mentioned|informed|clear|transparent)\b|\bno\s+(?:clarity|information|explanation)\b|\bunexpected|\bconfus|\bsuddenly\b|\bextra\b|\bsurprise/i;
+function feeSignals(rows){
+  const out=[];
+  for(const [fee,rxs] of Object.entries(FEE_RX)){
+    const sub=rows.filter(r=>rxs.some(x=>x.test(r.review_text))); if(!sub.length) continue;
+    out.push({fee, label:FEE_LABEL[fee], mentions:sub.length, confused:sub.filter(r=>CONFUSED.test(r.review_text)).length, rows:sub});
+  }
+  return out.sort((a,b)=>b.confused-a.confused||b.mentions-a.mentions);
+}
+
+// ---------------- pulse + explainer ----------------
+const words = s => (s.replace(/[#>*_`|-]+/g," ").match(/[\w₹%.,'’]+/g)||[]).length;
+const NUM=/\d+(?:[.,]\d+)*/g, nn=x=>{const v=parseFloat(x.replace(/,/g,""));return isNaN(v)?x:String(v)};
+const HINTS=[[/withdraw|payment|refund/i,"Add a withdrawal status tracker showing the expected credit date."],
+  [/crash|glitch|perform/i,"Prioritise stability fixes for the screens named in the latest-version reviews."],
+  [/support/i,"Publish support response-time targets and add a ticket status view in the app."],
+  [/order|trad/i,"Show the rejection reason on every rejected order, in plain language."],
+  [/charge|fee/i,"Add a charges breakdown on the order and redemption screens before users confirm."]];
+function templatePulse(S){
+  const lead=S.top[0], rising=S.top.filter(s=>s.trend==="rising").map(s=>s.theme);
+  let obs=`${lead.theme} is the largest theme with ${lead.reviews} reviews and an average of ${lead.avg}★.`;
+  if(rising.length) obs+=` Rising in the last 2 weeks: ${rising.join(", ")}.`;
+  const acts=[];
+  if(S.fee){ obs+=` ${S.fee.label} is the most misunderstood charge (${S.fee.mentions} mentions).`;
+    acts.push(`Show ${S.fee.label} before order or redemption confirmation, with a one-line explainer.`); }
+  for(const s of S.top){ if(acts.length===3) break; if(S.fee&&/charge|fee/i.test(s.theme)) continue;
+    const h=HINTS.find(([r])=>r.test(s.theme)); if(h&&!acts.includes(h[1])) acts.push(h[1]); }
+  while(acts.length<3) acts.push("Share this week's top quotes with support so they can prepare ready replies.");
+  return {obs, acts};
+}
+function pulseMd(S, obs, acts){
+  const L=[`# Groww Weekly Product Pulse, week ending ${S.end}`, `_${S.rows.length} public app reviews, ${S.start} to ${S.end}_`, "", "## Top themes",
+    ...S.top.map(s=>`- **${s.theme}**: ${s.reviews} reviews (${s.share}%), avg ${s.avg}★, ${s.trend}`), "", "## What users are saying",
+    ...S.quotes.map(q=>`> "${q.quote}" (${q.rating}★, ${q.theme})`), "", "## Key observation", obs, "", "## Action ideas",
+    ...acts.map((a,i)=>`${i+1}. ${a}`)];
+  return L.join("\n");
+}
+function checkPulse(S, obs, acts){
+  const p=[]; if(acts.length!==3) p.push("need exactly 3 actions");
+  const allowed=new Set((JSON.stringify(S.top)+S.rows.length+JSON.stringify(S.fee&&{m:S.fee.mentions,c:S.fee.confused})+" 1 2 3").match(NUM).map(nn));
+  const bad=((obs+" "+acts.join(" ")).match(NUM)||[]).filter(x=>!allowed.has(nn(x)));
+  if(bad.length) p.push("numbers not in the data: "+bad.join(", "));
+  if(/\b(?:buy|sell now|guaranteed|incompetent|lazy)\b/i.test(obs+acts.join(" "))) p.push("advice or blame language");
+  if(words(pulseMd(S,obs,acts))>250) p.push("over 250 words");
+  return p;
+}
+function explainerFacts(fee){
+  const spec=BANK.fees[fee]; if(!spec) return null;
+  const ids=spec.primary_links.slice(0,2);
+  return {name:spec.name, links:ids.map(i=>BANK.sources[i]), facts:spec.facts.filter(f=>ids.includes(f.source))};
+}
+const BANNED=/\b(?:you should|we recommend|recommend|avoid selling|don'?t sell|better to|best way|cheaper than|unfair|sorry|unfortunately|scam|guarantee)\b|https?:\/\/|www\./i;
+function checkBullets(bullets, facts){
+  const p=[]; if(bullets.length<3||bullets.length>6) p.push("need 3-6 bullets");
+  bullets.forEach((b,i)=>{
+    const cited=Array.isArray(b.facts)?b.facts:[];
+    if(!cited.length||!cited.every(c=>Number.isInteger(c)&&c>=1&&c<=facts.length)){p.push(`bullet ${i+1}: bad fact numbers`);return;}
+    if(String(b.text).split(/\s+/).length>40) p.push(`bullet ${i+1}: too long`);
+    if(BANNED.test(b.text)) p.push(`bullet ${i+1}: advice, opinion or URL`);
+    const ok=new Set(cited.flatMap(c=>(facts[c-1].text.match(NUM)||[]).map(nn)));
+    const bad=(String(b.text).match(NUM)||[]).filter(x=>!ok.has(nn(x)));
+    if(bad.length) p.push(`bullet ${i+1}: numbers not in its facts`);
+  });
+  return p;
+}
+function explainerMd(E, bullets){
+  const d=new Date(BANK.last_checked+"T00:00:00Z").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric",timeZone:"UTC"});
+  return [`### ${E.name} on Groww: what it is and when it applies`, "", ...bullets.map(b=>`- ${b}`), "", "**Official sources**",
+    ...E.links.map((l,i)=>`${i+1}. [${l.title}](${l.url})`), "", `_Last checked: ${d}_`].join("\n");
+}
+
+// ---------------- markdown -> safe DOM ----------------
+function inline(el, text){
+  const re=/\*\*([^*]+)\*\*|_([^_]+)_|\[([^\]]+)\]\((https?:[^)]+)\)/g; let last=0, m;
+  while((m=re.exec(text))){ el.append(text.slice(last,m.index));
+    if(m[1]){const b=document.createElement("strong");b.textContent=m[1];el.append(b);}
+    else if(m[2]){const i=document.createElement("em");i.textContent=m[2];el.append(i);}
+    else {const a=document.createElement("a");a.href=m[4];a.target="_blank";a.rel="noopener";a.textContent=m[3];el.append(a);}
+    last=re.lastIndex; }
+  el.append(text.slice(last));
+}
+function renderMd(container, md){
+  container.replaceChildren(); let list=null;
+  for(const line of md.split("\n")){
+    if(!line.trim()){ list=null; continue; }
+    let m;
+    if((m=line.match(/^#{1,3}\s+(.*)/))){ const h=document.createElement("h4"); inline(h,m[1]); container.append(h); list=null; }
+    else if((m=line.match(/^-\s+(.*)/))||(m=line.match(/^\d+\.\s+(.*)/))){
+      const tag=/^\d/.test(line)?"OL":"UL";
+      if(!list||list.tagName!==tag){ list=document.createElement(tag.toLowerCase()); container.append(list); }
+      const li=document.createElement("li"); inline(li,m[1]); list.append(li); }
+    else if((m=line.match(/^>\s?(.*)/))){ const q=document.createElement("blockquote"); inline(q,m[1]); container.append(q); list=null; }
+    else { const p=document.createElement("p"); inline(p,line); container.append(p); list=null; }
+  }
+}
+const mdText = md => md.replace(/\[([^\]]+)\]\(([^)]+)\)/g,"$1: $2").replace(/^#{1,6}\s*/gm,"").replace(/\*\*/g,"")
+  .replace(/(?<![\w/])_([^_\n]+)_(?![\w/])/g,"$1").replace(/^>\s?/gm,"  ");
+
+// ---------------- state + render ----------------
+let S=null, OUT=null, decided=false, isExample=false, aiUsed=false;
+function analyse(rows, example){
+  isExample=example; decided=false; aiUsed=false;
+  rows.forEach(r=>r.theme=themeOf(r.review_text));
+  const stats=themeStats(rows), top=stats.slice(0,3), used=new Set(), quotes=[];
+  for(const s of top){ const q=quoteFor(rows.filter(r=>r.theme===s.theme),used); if(q){used.add(q.review_id);quotes.push({...q,theme:s.theme});} }
+  const fees=feeSignals(rows), fee=fees[0]||null;
+  const dates=rows.map(r=>r.date).sort();
+  S={rows, stats, top, quotes, fees, fee, start:dates[0], end:dates[dates.length-1]};
+  const t=templatePulse(S);
+  const E=fee?explainerFacts(fee.fee):null;
+  OUT={obs:t.obs, acts:t.acts, pulseBy:"template", E, bullets:E?E.facts.slice(0,6).map(f=>f.text):null, expBy:"template"};
+  render();
+}
+function chip(text, cls){ const s=document.createElement("span"); s.className="chip "+(cls||""); s.textContent=text; return s; }
+function render(){
+  $("dataTag").replaceChildren(isExample?chip("Demo data","example"):chip("Your uploaded reviews"));
+  $("dataInfo").textContent=`${S.rows.length} reviews, ${S.start} to ${S.end}`;
+  const tb=$("themeRows"); tb.replaceChildren();
+  S.stats.forEach((s,i)=>{ const tr=document.createElement("tr");
+    const cells=[[s.theme+(i<3?"  · top "+(i+1):""),i<3?"top":""],[s.reviews,"num"],[s.share+"%","num"],[s.avg,"num"],[s.low+"%","num"]];
+    for(const [v,c] of cells){const td=document.createElement("td");td.textContent=v;if(c)td.className=c;tr.append(td);}
+    const td=document.createElement("td"); const sp=document.createElement("span"); sp.className="trend "+s.trend;
+    sp.textContent={rising:"↑ rising",falling:"↓ falling",steady:"→ steady"}[s.trend]; td.append(sp); tr.append(td); tb.append(tr); });
+  const qd=$("quotes"); qd.replaceChildren(); const h=document.createElement("h3"); h.textContent="3 real user quotes (copied word for word)"; qd.append(h);
+  for(const q of S.quotes){ const b=document.createElement("blockquote"); b.append(`“${q.quote}”`);
+    const f=document.createElement("footer"); f.textContent=`${q.rating}★ · ${q.source.replace("_"," ")} · ${q.date} · ${q.theme}`; b.append(f); qd.append(b); }
+  const fb=$("feeBox"); fb.replaceChildren();
+  if(S.fee){ const d=document.createElement("div"); d.className="fee";
+    const s=document.createElement("strong"); s.textContent="Recurring fee confusion: "+S.fee.label; d.append(s);
+    const p=document.createElement("p"); p.textContent=`${S.fee.mentions} reviews mention it, ${S.fee.confused} of them with confusion cues ("why", "hidden", "without informing", "didn't know"). Chosen by counting, not by AI.`; d.append(p);
+    const other=S.fees.slice(1).map(f=>`${f.label} ${f.mentions}/${f.confused}`).join(" · ");
+    if(other){const o=document.createElement("p");o.className="small muted";o.textContent="Other fee mentions (total/confused): "+other;d.append(o);}
+    fb.append(d);
+  } else { fb.textContent="No fee or charge mentions found in these reviews."; }
+  renderOutputs();
+}
+function renderOutputs(){
+  const pmd=pulseMd(S,OUT.obs,OUT.acts); OUT.pulseMd=pmd;
+  renderMd($("pulseOut"),pmd); $("pulseMeta").textContent=`${words(pmd)} words · ${OUT.pulseBy}`;
+  if(OUT.E){ OUT.expMd=explainerMd(OUT.E,OUT.bullets); renderMd($("expOut"),OUT.expMd);
+    $("expMeta").textContent=`${OUT.bullets.length} bullets · ${OUT.expBy}`; }
+  else { OUT.expMd=""; $("expOut").textContent=S.fee?`No verified official facts for "${S.fee.label}" yet. Add 2 official sources to data/fee_facts.json.`:"No fee issue found."; $("expMeta").textContent=""; }
+  renderGate();
+}
+function buildActions(){
+  const entry={date:S.end, top_themes:S.top.map(s=>s.theme), weekly_pulse:OUT.pulseMd,
+    identified_fee_issue:S.fee?`${S.fee.label}: ${S.fee.mentions} reviews mention it, ${S.fee.confused} with confusion cues`:"none found",
+    explanation_bullets:OUT.bullets||[], source_links:OUT.E?OUT.E.links.map(l=>l.url):[]};
+  const subject=`Weekly Product Pulse + Customer Clarification — ${S.end}`;
+  const body=["Hi team,","","Here is this week's product pulse from public Groww app reviews, followed by a reusable support snippet for the most misunderstood charge.","",
+    "WEEKLY PRODUCT PULSE","--------------------",mdText(OUT.pulseMd),"","SUPPORT SNIPPET (copy-paste ready)","----------------------------------",
+    OUT.expMd?mdText(OUT.expMd):"(no fee explainer this week)","","This is a draft prepared by the review-pulse workflow. Please review before sending."].join("\n");
+  return {entry, subject, body};
+}
+function renderGate(){
+  const A=buildActions(); OUT.actions=A;
+  $("entryPreview").textContent=JSON.stringify(A.entry,null,2);
+  $("emailPreview").textContent=`Subject: ${A.subject}\n\n${A.body}`;
+  $("reviewed").checked=false; $("reviewed").disabled=decided; $("reject").disabled=decided;
+  $("approve").disabled=true;
+  if(!decided){ $("decision").hidden=true; $("draftBox").hidden=true; }
+}
+
+// ---------------- capabilities ----------------
+let db=null, user=null, sample=null, downloads=null;
+const capsEl=$("caps");
+function showCaps(){
+  capsEl.replaceChildren(chip(db?"Notes doc: shared, saved in this artifact":"Notes doc: this browser only",db?"on":""),
+    chip(sample?"Claude wording: available":"Claude wording: off",sample?"on":""));
+  $("aiBtn").disabled=!sample||!S; if(!sample) $("aiInfo").textContent="Claude wording is unavailable here; templates are used.";
+  $("logWhere").textContent=db?"stored in this artifact's database":"stored in this browser";
+}
+async function initCaps(){
+  if(!(window.claude&&typeof window.claude.use==="function")){ showCaps(); startLog(); return; }
+  [db,user,sample,downloads]=await Promise.all(["db","user","sample","downloads"].map(n=>window.claude.use(n).catch(()=>null)));
+  showCaps(); startLog();
+}
+
+// ---------------- notes log ----------------
+const LS="pulse-notes";
+function localNotes(){ try{return JSON.parse(localStorage.getItem(LS)||"[]");}catch{return [];} }
+function renderLog(entries){
+  const log=$("log"); if(!entries.length){ return; }
+  log.replaceChildren();
+  for(const e of entries){ const d=document.createElement("div"); d.className="entry";
+    const h=document.createElement("h3"); h.textContent=`Week ending ${e.date}`+(e.example?" (demo data)":""); d.append(h);
+    const m=document.createElement("p"); m.className="meta"; m.textContent=`Approved ${e.approved_at} · ${e.approval_id}`; d.append(m);
+    const kv=[["Top themes",e.top_themes.join(", ")],["Fee issue",e.identified_fee_issue]];
+    for(const [k,v] of kv){const p=document.createElement("p");const b=document.createElement("strong");b.textContent=k+": ";p.append(b,v);d.append(p);}
+    const det=document.createElement("details"); const s=document.createElement("summary"); s.textContent="Full entry (pulse, bullets, links)"; det.append(s);
+    const pre=document.createElement("pre"); pre.textContent=JSON.stringify({weekly_pulse:e.weekly_pulse,explanation_bullets:e.explanation_bullets,source_links:e.source_links},null,2); det.append(pre); d.append(det);
+    log.append(d); }
+}
+function startLog(){
+  if(db){ db.collection("notes").orderBy("approved_at","desc").limit(20).onSnapshot(
+      snap=>renderLog(snap.docs.map(d=>d.data())), ()=>renderLog(localNotes())); }
+  else renderLog(localNotes());
+}
+
+// ---------------- events ----------------
+$("loadExample").addEventListener("click",()=>{ $("csvError").hidden=true; analyse(clean(EXAMPLE.map(r=>({...r}))),true); });
+$("csv").addEventListener("change",async e=>{
+  const f=e.target.files[0]; if(!f) return; $("csvError").hidden=true;
+  try{ const rows=clean(parseCSV(await f.text()));
+    if(!rows.length) throw new Error("No usable reviews found. Check the file has review_id, date, source, rating and review_text columns.");
+    analyse(rows,false); showCaps(); }
+  catch(err){ $("csvError").textContent=err.message; $("csvError").hidden=false; }
+  e.target.value="";
+});
+$("reviewed").addEventListener("change",e=>{ $("approve").disabled=!e.target.checked||decided; });
+$("aiBtn").addEventListener("click",async()=>{
+  if(!sample||!S) return; const btn=$("aiBtn"); btn.disabled=true; $("aiInfo").textContent="Asking Claude…";
+  const notes=[];
+  try{
+    // pulse
+    const pin={reviews:S.rows.length,window:[S.start,S.end],top_themes:S.top,quotes:S.quotes.map(q=>q.quote),
+      fee_issue:S.fee&&{label:S.fee.label,mentions:S.fee.mentions,confused_mentions:S.fee.confused}};
+    let probs=[];
+    for(let a=1;a<=2;a++){
+      const out=await sample.json(`You write the internal weekly product pulse for the Groww app's product team.
+Write "observation": 2 sentences on what is going wrong or trending (mention the fee confusion if relevant), and "actions": exactly 3 action ideas for the product team, one sentence each, under 22 words, starting with a verb; at least one addresses the fee confusion.
+Use only these facts; any number you write must appear in them. No investment advice, no blame, do not repeat quotes.
+Return JSON {"observation": "...", "actions": ["...","...","..."]}.
+FACTS: ${JSON.stringify(pin)}${probs.length?"\nFix: "+probs.join("; "):""}`,{modelTier:"quick"});
+      const o=String(out&&out.observation||""), ac=(out&&out.actions||[]).map(String);
+      probs=checkPulse(S,o,ac); if(!probs.length){ OUT.obs=o; OUT.acts=ac; OUT.pulseBy="Claude, checked"; break; }
+    }
+    if(probs.length) notes.push("pulse kept the template ("+probs[0]+")");
+    // explainer
+    if(OUT.E){ const facts=OUT.E.facts; probs=[];
+      for(let a=1;a<=2;a++){
+        const out=await sample.json(`Write a short neutral facts-only explainer about "${OUT.E.name}" on Groww for customers, reused by support as a ready reply.
+Use ONLY the numbered FACTS. 4 to 6 bullets, each one plain sentence of at most 35 words. Start with what the fee is and when it applies; one bullet must clear up this misunderstanding from reviews: users are surprised by this charge. No advice, opinions, apologies or URLs. Each bullet lists the fact numbers it uses.
+Return JSON {"bullets":[{"text":"...","facts":[1]}]}.
+FACTS:\n${facts.map((f,i)=>`${i+1}. ${f.text}`).join("\n")}${probs.length?"\nFix: "+probs.join("; "):""}`,{modelTier:"quick"});
+        const b=(out&&out.bullets)||[]; probs=checkBullets(b,facts);
+        if(!probs.length){ OUT.bullets=b.map(x=>String(x.text).trim()); OUT.expBy="Claude, checked"; break; }
+      }
+      if(probs.length) notes.push("explainer kept the template ("+probs[0]+")");
+    }
+    decided=false; renderOutputs();
+    $("aiInfo").textContent=notes.length?notes.join("; "):"Claude rewrote the observation, actions and bullets; all checks passed.";
+  }catch(e){
+    if(e&&e.code==="not_granted"){ sample=null; showCaps(); }
+    $("aiInfo").textContent=e&&e.code==="rate_limited"?"Claude is busy, try again in a minute. Templates are kept.":"Claude wording isn't available right now. Templates are kept.";
+  }
+  btn.disabled=!sample;
+});
+function setDecision(cls, text){ const d=$("decision"); d.className="status "+cls; d.textContent=text; d.hidden=false; }
+$("approve").addEventListener("click",async()=>{
+  if(decided||!$("reviewed").checked) return;
+  decided=true; $("approve").disabled=true; $("reject").disabled=true; $("reviewed").disabled=true;
+  const A=OUT.actions, id="APR-"+Math.random().toString(16).slice(2,12);
+  const rec={...A.entry, approval_id:id, approved_at:new Date().toISOString().slice(0,19).replace("T"," ")+" UTC", example:isExample};
+  let where="this browser";
+  try{
+    if(db){ await db.collection("notes").doc(id).set(rec); where="the shared notes doc"; }
+    else { const n=localNotes(); n.unshift(rec); try{localStorage.setItem(LS,JSON.stringify(n.slice(0,20)));}catch{} renderLog(n); }
+    setDecision("ok",`Approved (${id}). Entry appended to ${where}. Email draft created below; it has not been sent.`);
+    $("draftSubject").textContent=A.subject; $("draftBox").hidden=false;
+  }catch(e){
+    decided=false; $("reject").disabled=false; $("reviewed").disabled=false;
+    setDecision("no",`Couldn't append the entry (${e&&e.code||"error"}). Nothing was written. Try Approve again.`);
+  }
+});
+$("reject").addEventListener("click",()=>{ if(decided) return; decided=true;
+  $("approve").disabled=true; $("reject").disabled=true; $("reviewed").disabled=true;
+  setDecision("no","Rejected. Nothing was appended and no draft was created."); });
+$("copyDraft").addEventListener("click",async()=>{
+  const t=`Subject: ${OUT.actions.subject}\n\n${OUT.actions.body}`;
+  try{ await navigator.clipboard.writeText(t); $("draftMsg").textContent="Copied."; }
+  catch{ const r=document.createRange(); r.selectNodeContents($("emailPreview")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); $("draftMsg").textContent="Selected the draft above; copy it with your keyboard."; }
+});
+$("saveEml").addEventListener("click",async()=>{
+  const A=OUT.actions;
+  const eml=`Subject: ${A.subject}\r\nTo: \r\nX-Unsent: 1\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n${A.body.replace(/\n/g,"\r\n")}\r\n`;
+  if(!downloads){ $("draftMsg").textContent="Saving files isn't available here. Use Copy draft text."; return; }
+  try{ await downloads.save({filename:`email_draft_${S.end}.eml`, data:eml}); $("draftMsg").textContent="Saved. Open it in your mail app to edit and send."; }
+  catch(e){ $("draftMsg").textContent=e&&e.code==="declined"?"Save cancelled.":"Couldn't save the file. Use Copy draft text."; }
+});
+
+analyse(clean(EXAMPLE.map(r=>({...r}))),true);
+initCaps();
+})();
+</script>
